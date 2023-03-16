@@ -1,0 +1,27 @@
+#!/usr/sbin/nft -f
+
+define vxlans = { {% for vni in range(1, vni_count + 1) %} br{{ vni }}, {% endfor %} }
+
+define uplink = enp0s31f6
+
+flush ruleset
+
+# NAT for all VNIs
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter;
+        }
+        chain forward {
+                type filter hook forward priority filter; policy drop;
+                ct state established, related accept
+                iifname $vxlans oifname $uplink counter accept
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+        chain postrouting {
+                type nat hook postrouting priority 100; policy accept;
+                iifname $vxlans oifname $uplink masquerade
+        }
+}

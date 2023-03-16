@@ -1,0 +1,28 @@
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    # You have to adapt this section to match your network setup.
+    enp0s31f6:
+      dhcp4: true
+  tunnels:
+  {% for vni in range(1, vni_count + 1) %}
+  vxlan{{ vni }}:
+      mode: vxlan
+      id: {{vni}}
+      local: 10.242.2.4
+      ttl: 10
+      mac-learning: false
+      port: 4789
+
+  {% endfor %}
+
+  bridges:
+  {% for vni in range(1, vni_count + 1) %}
+  br{{vni}}:
+      interfaces:
+        - vxlan{{vni}}
+      parameters:
+        stp: false
+      addresses:
+        - 10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.1/24
+  {% endfor %}

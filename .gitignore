@@ -1,0 +1,5 @@
+zyxel/*
+!zyxel/README.md
+linksys/*
+!linksys/README.md
+inventory.yml

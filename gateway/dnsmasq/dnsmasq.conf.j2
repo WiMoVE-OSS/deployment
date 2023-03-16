@@ -1,0 +1,13 @@
+server=8.8.8.8
+
+{% for vni in range(1, vni_count + 1) %}
+interface=br{{vni}}
+{% endfor %}
+
+bind-interfaces
+no-resolv
+dhcp-authoritative
+
+{% for vni in range(1, vni_count + 1) %}
+dhcp-range=10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.100,10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.200,255.255.255.0,5m
+{% endfor %}
