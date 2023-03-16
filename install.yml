@@ -131,7 +131,7 @@
         src: "{{ item }}"
         dest: "/tmp/wimove.ipk"
       with_fileglob: "./linksys/wimove_*_arm*.ipk"
-#General OpenWRT setup
+# General OpenWRT setup
 - hosts: openwrt
   vars:
     ansible_scp_extra_args: -O
