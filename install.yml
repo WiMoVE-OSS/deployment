@@ -68,6 +68,10 @@
         value: '1'
         sysctl_set: yes
     - ansible.posix.sysctl:
+        name: net.ipv6.conf.all.forwarding
+        value: 1
+        sysctl_set: yes
+    - ansible.posix.sysctl:
         name: net.ipv4.conf.all.arp_ignore
         value: '1'
         sysctl_set: yes
