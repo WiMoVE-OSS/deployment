@@ -2,7 +2,7 @@
 
 define vxlans = { {% for vni in range(1, vni_count + 1) %} br{{ vni }}, {% endfor %} }
 
-define uplink = enp0s31f6
+define uplink = {{uplink_if}}
 
 flush ruleset
 

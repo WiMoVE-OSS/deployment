@@ -7,12 +7,12 @@ START=99
 STOP=15
 start_service() {
          procd_open_instance [instance_name]
-         procd_set_param command /usr/bin/wimove # service executable that has to run in **foreground**.
+         procd_set_param command /usr/bin/wimoved # service executable that has to run in **foreground**.
          # respawn automatically if something died, be careful if you have an alternative process supervisor
          # if process dies sooner than respawn_threshold, it is considered crashed and after 5 retries the service is stopped
          procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-15} ${respawn_retry:-10}
-         procd_set_param stdout 1 # forward stdout of the command to logd
-         procd_set_param stderr 1 # same for stderr
+         procd_set_param stdout 0 # forward stdout of the command to logd
+         procd_set_param stderr 0 # same for stderr
          procd_set_param user root # run service as user nobody
          procd_set_param term_timeout 60 # wait before sending SIGKILL
          procd_close_instance

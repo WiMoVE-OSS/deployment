@@ -1,7 +1,7 @@
 # Install playbook for WiMoVE
 ---
 # Install frr on the gateway and the route reflectors
-- hosts: bgp
+- hosts: ubuntu
   name: "Base setup frr"
   tasks:
     - name: "Install frr"
@@ -38,7 +38,7 @@
         state: restarted
       when: frr_configuration.changed
 # Setup all services on the gateway
-- hosts: gateway
+- hosts: gateways
   name: "Configure gateway"
   tasks:
     - name: "Copy netplan configuration"
@@ -111,26 +111,26 @@
     ansible_scp_extra_args: -O
   roles:
     - openwrt
-  name: "Copy wimove to zyxel"
+  name: "Copy wimoved to zyxel"
   tasks:
-    - name: copy wimove for NWA
+    - name: copy wimoved for NWA
       ansible.builtin.copy:
         src: "{{ item }}"
-        dest: "/tmp/wimove.ipk"
-      with_fileglob: "./zyxel/wimove_*_mipsel*.ipk"
+        dest: "/tmp/wimoved.ipk"
+      with_fileglob: "./zyxel/*.ipk"
 # Copy WiMoVE package on to the Linksys APs
 - hosts: linksys
   vars:
     ansible_scp_extra_args: -O
   roles:
     - openwrt
-  name: "Copy wimove to linksys"
+  name: "Copy wimoved to linksys"
   tasks:
-    - name: copy wimove for ACS
+    - name: copy wimoved for ACS
       ansible.builtin.copy:
         src: "{{ item }}"
-        dest: "/tmp/wimove.ipk"
-      with_fileglob: "./linksys/wimove_*_arm*.ipk"
+        dest: "/tmp/wimoved.ipk"
+      with_fileglob: "./linksys/*.ipk"
 # General OpenWRT setup
 - hosts: openwrt
   vars:
@@ -149,9 +149,9 @@
         name: logd
         force: remove
         state: absent
-    - name: remove old wimove
+    - name: remove old wimoved
       opkg:
-        name: wimove
+        name: wimoved
         force: remove
         state: absent
     - name: install hostapd
@@ -203,33 +203,33 @@
       ansible.builtin.file:
         path: /usr/bin/wimove
         state: absent
-    - name: ensures wimove dir exists
+    - name: ensures wimoved dir exists
       file:
-        path: "/etc/wimove/"
+        path: "/etc/wimoved/"
         state: directory
-    - name: copy wimove config
+    - name: copy wimoved config
       ansible.builtin.copy:
-        content: "{{ lookup ('template', './access-point/wimove-config.j2') }}"
-        dest: "/etc/wimove/config"
+        content: "{{ lookup ('template', './access-point/wimoved-config.j2') }}"
+        dest: "/etc/wimoved/config"
     - name: copy daemons
       ansible.builtin.copy:
         src: "./access-point/daemons"
         dest: "/etc/frr/daemons"
     - name: copy init file
       ansible.builtin.copy:
-        src: "./wimove"
-        dest: "/etc/init.d/wimove"
+        src: "./access-point/wimoved"
+        dest: "/etc/init.d/wimoved"
         mode: "755"
-    - name: remove wimove
+    - name: remove wimoved
       opkg:
         name:
-          - wimove
+          - wimoved
         state: absent
-    - name: install wimove
-      ansible.builtin.command: opkg install /tmp/wimove.ipk
-    - name: enable and start wimove
+    - name: install wimoved
+      ansible.builtin.command: opkg install /tmp/wimoved.ipk
+    - name: enable and start wimoved
       service:
-        name: wimove
+        name: wimoved
         state: started
         enabled: yes
     - name: enable and start frr
