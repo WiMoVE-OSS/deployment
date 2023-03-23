@@ -10,6 +10,10 @@ bgp:
       hosts:
         route-reflector:
           ip: 172.X.X.X
+          # Which interface is used for the internet connection
+          uplink_if: eth0
+          # Uncomment and edit the following line if you want to use a different interface to connect to the APs
+          # wimove_if: eth1
     openwrt:
       children:
         zyxel:
