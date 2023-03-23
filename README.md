@@ -1,5 +1,7 @@
 # Ansible Deployment for WiMoVE
 
+**For a detailed guide take a look at the [installation instructions in our documentation](https://wimove-oss.github.io/docs/setup/)**
+
 This repository contains the ansible playbooks we use for deployment. We use `Ubuntu 22.10` hosts as gateway and route reflector. The gateway requires `netplan > 105.0` to create vxlan interfaces with netplan. You need ansible on your host to use the playbooks. You can find documentation on how to do this [here](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). Then install the `openwrt-role` via
 
 ```bash
