@@ -1,0 +1,12 @@
+- name: "Copy frr configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/frr/frr.conf.j2"
+    dest: "/etc/frr/frr.conf"
+  register: frr_configuration
+- name: "Restart FRR"
+  become: true
+  ansible.builtin.service:
+    name: frr
+    state: restarted
+  when: frr_configuration.changed

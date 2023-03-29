@@ -1,0 +1,17 @@
+- name: "Install frr"
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - frr
+- name: "Copy daemons"
+  become: true
+  ansible.builtin.copy:
+    src: "files/frr/daemons"
+    dest: "/etc/frr/daemons"
+  register: frr_daemons
+- name: "Restart FRR"
+  become: true
+  ansible.builtin.service:
+    name: frr
+    state: restarted
+  when: frr_daemons.changed

@@ -1,0 +1,64 @@
+- name: "Copy netplan configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/netplan/00-installer-config.yaml.j2"
+    dest: "/etc/netplan/00-installer-config.yaml"
+  register: netplan_config
+- name: "Restart to apply netplan"
+  become: true
+  ansible.builtin.reboot:
+  when: netplan_config.changed
+- name: "Copy frr configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/frr/frr.conf.j2"
+    dest: "/etc/frr/frr.conf"
+  register: frr_configuration
+- name: "Restart FRR"
+  become: true
+  ansible.builtin.service:
+    name: frr
+    state: restarted
+  when: frr_configuration.changed
+- ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+- ansible.posix.sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: 1
+    sysctl_set: yes
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.all.arp_ignore
+    value: '1'
+    sysctl_set: yes
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.all.arp_announce
+    value: '2'
+    sysctl_set: yes
+- name: "Copy nftables configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/nft/nftables.conf.j2"
+    dest: "/etc/nftables.conf"
+  register: frr_configuration
+- name: "Apply NFTables config"
+  become: true
+  command: "/etc/nftables.conf"
+- name: "Install dnsmasq"
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - dnsmasq
+- name: "Copy dnsmasq configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/dnsmasq/dnsmasq.conf.j2"
+    dest: "/etc/dnsmasq.conf"
+  register: dnsmasq_config
+- name: "Restart Dnsmasq"
+  become: true
+  ansible.builtin.service:
+    name: dnsmasq
+    state: restarted
+  when: dnsmasq_config.changed

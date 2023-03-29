@@ -1,0 +1,80 @@
+- name: remove wpad
+  opkg:
+    name: wpad-basic-wolfssl
+    force: remove
+    state: absent
+- name: remove logd
+  opkg:
+    name: logd
+    force: remove
+    state: absent
+- name: remove old wimoved
+  opkg:
+    name: wimoved
+    force: remove
+    state: absent
+- name: install hostapd
+  opkg:
+    name: hostapd
+    force: overwrite
+    state: present
+- name: install packages
+  opkg:
+    name: "{{ item }}"
+    state: present
+  loop:
+      - syslog-ng
+      - hostapd
+      - hostapd-utils
+      - frr
+      - frr-bgpd
+      - frr-zebra
+      - frr-vtysh
+      - frr-watchfrr
+      - frr-staticd
+      - luci-proto-vxlan
+      - libubox-lua
+      - lua-sha2
+      - libuci-lua
+      - luaposix
+      - prometheus-node-exporter-lua
+      - prometheus-node-exporter-lua-netstat
+      - prometheus-node-exporter-lua-openwrt
+      - prometheus-node-exporter-lua-wifi
+      - prometheus-node-exporter-lua-wifi_stations
+- name: copy frr.conf
+  ansible.builtin.copy:
+    content: "{{ lookup ('template', './templates/frr.j2') }}"
+    dest: "/etc/frr/frr.conf"
+- name: copy vlan association
+  ansible.builtin.copy:
+    src: "./files/hostapd.vlan"
+    dest: "/etc/hostapd.vlan"
+- name: copy prometheus node exporter config
+  ansible.builtin.copy:
+    src: "./files/prometheus-node-exporter-lua"
+    dest: "/etc/config/prometheus-node-exporter-lua"
+- name: copy syslog-ng.conf
+  ansible.builtin.copy:
+    content: "{{ lookup ('template', './templates/syslog-ng.conf.j2') }}"
+    dest: "/etc/syslog-ng.conf"
+- name: install wimoved
+  ansible.builtin.command: opkg install /tmp/wimoved.ipk
+- name: copy wimoved config
+  ansible.builtin.copy:
+    content: "{{ lookup ('template', './templates/wimoved-config.j2') }}"
+    dest: "/etc/wimoved/config"
+- name: enable and start wimoved
+  service:
+    name: wimoved
+    state: started
+    enabled: yes
+- name: copy daemons
+  ansible.builtin.copy:
+    src: "./files/daemons"
+    dest: "/etc/frr/daemons"
+- name: enable and start frr
+  service:
+    name: frr
+    state: started
+    enabled: yes
