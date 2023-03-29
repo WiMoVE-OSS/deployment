@@ -17,10 +17,6 @@
     - gateway
 # Copy WiMoVE package on to the Zyxel APs
 - hosts: zyxel
-  vars:
-    ansible_scp_extra_args: -O
-  roles:
-    - openwrt
   name: "Copy wimoved to zyxel"
   tasks:
     - name: copy wimoved for NWA
@@ -30,10 +26,6 @@
       with_fileglob: "./zyxel/*.ipk"
 # Copy WiMoVE package on to the Linksys APs
 - hosts: linksys
-  vars:
-    ansible_scp_extra_args: -O
-  roles:
-    - openwrt
   name: "Copy wimoved to linksys"
   tasks:
     - name: copy wimoved for ACS
@@ -47,10 +39,6 @@
     - access-point
 # Copy configuration for OpenWRT onto zyxel APs
 - hosts: zyxel
-  vars:
-    ansible_scp_extra_args: -O
-  roles:
-    - openwrt
   name: "Applying openwrt config"
   tasks:
     - name: import openwrt config
@@ -63,17 +51,9 @@
       notify:
         - reload wifi
         - reload network
-    - name: wait for connection
-      wait_for_connection:
-        timeout: 30
-        delay: 2
 
 # Copy configuration for OpenWRT onto linksys APs
 - hosts: linksys
-  vars:
-    ansible_scp_extra_args: -O
-  roles:
-    - openwrt
   name: "Applying openwrt config"
   tasks:
     - name: import openwrt config
@@ -86,16 +66,8 @@
       notify:
         - reload wifi
         - reload network
-    - name: wait for connection
-      wait_for_connection:
-        timeout: 30
-        delay: 2
 
 - hosts: openwrt
-  vars:
-    ansible_scp_extra_args: -O
-  roles:
-    - openwrt
   name: "Rebooting all APs"
   tasks:
     - name: reboot
