@@ -63,12 +63,11 @@
       notify:
         - reload wifi
         - reload network
-    - name: wait for wifi
+    - name: wait for connection
       wait_for_connection:
         timeout: 30
-        delay: 5
-    - name: reboot
-      command: reboot
+        delay: 2
+
 # Copy configuration for OpenWRT onto linksys APs
 - hosts: linksys
   vars:
@@ -87,9 +86,17 @@
       notify:
         - reload wifi
         - reload network
-    - name: wait for wifi
+    - name: wait for connection
       wait_for_connection:
         timeout: 30
-        delay: 5
+        delay: 2
+
+- hosts: openwrt
+  vars:
+    ansible_scp_extra_args: -O
+  roles:
+    - openwrt
+  name: "Rebooting all APs"
+  tasks:
     - name: reboot
       command: reboot

@@ -1,0 +1,19 @@
+---
+- name: Restart nftables
+  become: true
+  ansible.builtin.service:
+    name: nftables
+    state: restarted
+- name: Restart frr
+  become: true
+  ansible.builtin.service:
+    name: frr
+    state: restarted
+- name: Restart host
+  become: true
+  ansible.builtin.reboot:
+- name: Restart Dnsmasq
+  become: true
+  ansible.builtin.service:
+    name: dnsmasq
+    state: restarted
