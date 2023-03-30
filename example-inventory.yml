@@ -20,6 +20,8 @@ bgp:
     openwrt:
       children:
         zyxel:
+          vars:
+            directory: zyxel
           hosts:
             zyxel1:
               name: zyxel1
@@ -28,6 +30,8 @@ bgp:
               name: zyxel2
               ip: 10.242.2.42
         linksys:
+          vars:
+            directory: linksys
           hosts:
             linksys1:
               name: linksys1
