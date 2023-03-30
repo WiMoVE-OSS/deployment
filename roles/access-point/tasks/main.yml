@@ -1,3 +1,8 @@
+- name: copy wimoved from {{ directory }} directory
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/tmp/wimoved.ipk"
+  with_fileglob: "./files/{{ directory }}/*.ipk"
 - name: remove wpad
   opkg:
     name: wpad-basic-wolfssl
@@ -74,3 +79,15 @@
     name: frr
     state: started
     enabled: yes
+- name: import openwrt config from {{ directory }} directory
+  uci:
+    command: import
+    value: "{{ lookup ('template', './templates/{{ directory }}/conf-ota.j2') }}"
+- name: commit changes
+  uci:
+    command: commit
+  notify:
+    - reload wifi
+    - reload network
+- name: "Rebooting all APs"
+  command: reboot
