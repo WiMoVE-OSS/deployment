@@ -1,19 +1,22 @@
 bgp:
   hosts:
   children:
-    gateways:
+    ubuntu:
       hosts:
-        gateway:
-          # Will be used as router-id for bgp
-          ip: 172.X.X.X
-          # Which interface is used for the internet connection
-          uplink_if: eth0
-          #  Which interface is supposed to listen for the wimoved network
-          wimove_if: eth0
-    route-reflectors:
-      hosts:
-        route-reflector:
-          ip: 172.X.X.X
+      children:
+        gateways:
+          hosts:
+            gateway:
+              # Will be used as router-id for bgp
+              ip: 172.X.X.X
+              # Which interface is used for the internet connection
+              uplink_if: eth0
+              #  Which interface is supposed to listen for the wimoved network
+              wimove_if: eth0
+        routeReflectors:
+          hosts:
+            route-reflector:
+              ip: 172.X.X.X
     openwrt:
       children:
         zyxel:
