@@ -1,5 +1,6 @@
-zyxel/*
-!zyxel/README.md
-linksys/*
-!linksys/README.md
+roles/access-point/files/zyxel/*
+roles/access-point/templates/zyxel/*
+roles/access-point/files/linksys/*
+roles/access-point/templates/linksys/*
+!roles/access-point/*/*/README.md
 inventory.yml

@@ -1,6 +1,6 @@
 # Info
 
-In this directory you have to copy the WiMoVE package you want to install on the zyxel APs. Additionally you have to place a file called `conf-ota.j2`. You can generate such a file by executing `uci export` on the AP and copying the contents.
+In this directory you have to place a file called `conf-ota.j2`. You can generate such a file by executing `uci export` on the AP and copying the contents.
 
 Then adjust the `wifi-iface` section that it contains the following lines:
 

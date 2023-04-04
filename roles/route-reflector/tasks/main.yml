@@ -1,0 +1,7 @@
+- name: "Copy frr configuration"
+  become: true
+  ansible.builtin.template:
+    src: "templates/frr/frr.conf.j2"
+    dest: "/etc/frr/frr.conf"
+  notify:
+    - Restart frr
