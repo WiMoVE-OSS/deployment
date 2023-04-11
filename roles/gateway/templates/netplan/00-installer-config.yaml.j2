@@ -9,7 +9,7 @@ network:
       dhcp4: true
   {% endif %}
 tunnels:
-  {% for vni in range(1, vni_count + 1) %}
+  {% for vni in range(min_vni, max_vni + 1) %}
   vxlan{{ vni }}:
       mode: vxlan
       id: {{vni}}
@@ -21,7 +21,7 @@ tunnels:
   {% endfor %}
 
   bridges:
-  {% for vni in range(1, vni_count + 1) %}
+  {% for vni in range(min_vni, max_vni + 1) %}
   br{{vni}}:
       interfaces:
         - vxlan{{vni}}
