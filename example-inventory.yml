@@ -52,6 +52,6 @@ bgp:
     route_reflector_ip: example-ip
     # The ip range the route reflector allows peerings from:
     listen_range: ip-subnet
-    # Netplan supports  the range 1..16777215 for those two values. Please be aware that for every vni two netdevs will be created!
+    # Netplan supports the range 1..16777215 for those two values. Please be aware that for every vni two netdevs will be created!
     min_vni: 1
     max_vni: 20
