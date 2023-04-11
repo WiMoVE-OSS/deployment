@@ -1,6 +1,6 @@
 #!/usr/sbin/nft -f
 
-define vxlans = { {% for vni in range(1, vni_count + 1) %} br{{ vni }}, {% endfor %} }
+define vxlans = { {% for vni in range(min_vni, max_vni + 1) %} br{{ vni }}, {% endfor %} }
 
 define uplink = {{uplink_if}}
 

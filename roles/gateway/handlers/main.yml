@@ -12,7 +12,7 @@
 - name: Restart host
   become: true
   ansible.builtin.reboot:
-- name: Restart Dnsmasq
+- name: Restart dnsmasq
   become: true
   ansible.builtin.service:
     name: dnsmasq
