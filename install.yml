@@ -5,11 +5,6 @@
   name: "Base setup frr"
   roles:
     - frr-setup
-# FRR setup on the route reflectors
-- hosts: routeReflectors
-  name: "Copy FRR config"
-  roles:
-    - route-reflector
 # Setup all services on the gateway
 - hosts: gateways
   name: "Configure gateway"

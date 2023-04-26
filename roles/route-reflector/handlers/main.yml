@@ -1,5 +1,0 @@
-- name: Restart frr
-  become: true
-  ansible.builtin.service:
-    name: frr
-    state: restarted
