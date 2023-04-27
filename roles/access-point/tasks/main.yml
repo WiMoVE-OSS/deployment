@@ -37,6 +37,7 @@
       - frr-vtysh
       - frr-watchfrr
       - frr-staticd
+      - luci-proto-vxlan
       - prometheus-node-exporter-lua
       - prometheus-node-exporter-lua-netstat
       - prometheus-node-exporter-lua-openwrt
