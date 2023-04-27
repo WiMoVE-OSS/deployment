@@ -23,6 +23,7 @@ router bgp 65000
   address-family l2vpn evpn
    neighbor fabric activate
    advertise-all-vni
+   advertise-svi-ip
   exit-address-family
   !
 !
