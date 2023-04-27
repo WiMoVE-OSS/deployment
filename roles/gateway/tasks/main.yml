@@ -12,22 +12,6 @@
     dest: "/etc/frr/frr.conf"
   notify:
     - Restart frr
-- ansible.posix.sysctl:
-    name: net.ipv4.ip_forward
-    value: '1'
-    sysctl_set: true
-- ansible.posix.sysctl:
-    name: net.ipv6.conf.all.forwarding
-    value: '1'
-    sysctl_set: true
-- ansible.posix.sysctl:
-    name: net.ipv4.conf.all.arp_ignore
-    value: '1'
-    sysctl_set: yes
-- ansible.posix.sysctl:
-    name: net.ipv4.conf.all.arp_announce
-    value: '2'
-    sysctl_set: true
 - name: "Copy nftables configuration"
   become: true
   ansible.builtin.template:
@@ -57,3 +41,19 @@
     dest: "/etc/dnsmasq.conf"
   notify:
     - Restart dnsmasq
+- ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: true
+- ansible.posix.sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: '1'
+    sysctl_set: true
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.all.arp_ignore
+    value: '1'
+    sysctl_set: yes
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.all.arp_announce
+    value: '2'
+    sysctl_set: true

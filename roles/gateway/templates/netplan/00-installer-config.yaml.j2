@@ -13,7 +13,7 @@ tunnels:
   vxlan{{ vni }}:
       mode: vxlan
       id: {{vni}}
-      local: 10.242.2.4
+      local: {{ ip }}
       ttl: 10
       mac-learning: false
       port: 4789
