@@ -12,16 +12,28 @@ ip nht resolve-via-default
 ip6 nht resolve-via-default
 router bgp 65000
   bgp router-id {{ ip }}
+{% if is_route_reflector %}
+! RR configuration
+  bgp cluster-id {{ ip }}
+  bgp log-neighbor-changes
+{% endif %}
   no bgp default ipv4-unicast
   neighbor fabric peer-group
   neighbor fabric remote-as 65000
   neighbor fabric capability extended-nexthop
   neighbor fabric ebgp-multihop 5
-  ! BGP sessions with route reflectors
   neighbor {{ route_reflector_ip }} peer-group fabric
-  !
+{% if is_route_reflector %}
+! Listen since this is also a RR
+  bgp listen range {{ listen_range }} peer-group fabric
+{% endif %}
+
   address-family l2vpn evpn
    neighbor fabric activate
+{% if is_route_reflector %}
+! RR configuration
+   neighbor fabric route-reflector-client
+{% endif %}
    advertise-all-vni
    advertise-svi-ip
   exit-address-family

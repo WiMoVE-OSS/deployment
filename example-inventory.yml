@@ -13,6 +13,9 @@ bgp:
               uplink_if: eth0
               #  Which interface is supposed to listen for the wimoved network
               wimove_if: eth0
+              # Set to true if the gateway should also act as a Route Reflector.
+              # When set, you need to remove all hosts from the routeReflectors group
+              is_route_reflector: false
         routeReflectors:
           hosts:
             route-reflector:
