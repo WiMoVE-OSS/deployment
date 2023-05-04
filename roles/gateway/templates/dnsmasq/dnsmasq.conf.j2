@@ -7,7 +7,8 @@ interface=br{{vni}}
 bind-interfaces
 no-resolv
 dhcp-authoritative
+dhcp-lease-max={{(max_vni - min_vni + 1)*255}}
 
 {% for vni in range(min_vni, max_vni + 1) %}
-dhcp-range=10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.100,10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.200,255.255.255.0,5m
+dhcp-range=10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.2,10.{{(vni / 255)|int + 1}}.{{vni % 255 +1}}.254,255.255.255.0,5m
 {% endfor %}
