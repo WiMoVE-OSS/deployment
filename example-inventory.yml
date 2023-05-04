@@ -13,6 +13,7 @@ bgp:
               uplink_if: eth0
               #  Which interface is supposed to listen for the wimoved network
               wimove_if: eth0
+              # When you want to combine the RR and gateway into one device, simply place the same host in both groups
         routeReflectors:
           hosts:
             route-reflector:

@@ -15,6 +15,10 @@
   name: "Configure gateway"
   roles:
     - gateway
+- hosts: gateways:&routeReflectors
+  name: "Configure combined gateway and route reflector"
+  roles:
+    - combined
 - hosts: openwrt
   roles:
     - access-point
